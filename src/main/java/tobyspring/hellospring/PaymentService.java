@@ -13,32 +13,15 @@ import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
-public class PaymentService {
+abstract public class PaymentService {
     public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount) throws IOException {
-        // 환율 가져오기
         // https://open.er-api.com/v6/latest/USD
-        URL url = new URL("https://open.er-api.com/v6/latest/" + currency);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String collect = bufferedReader.lines().collect(Collectors.joining());
-        bufferedReader.close();
-
-        ObjectMapper mapper = new ObjectMapper();
-        ExRateData exRateData = mapper.readValue(collect, ExRateData.class);
-        BigDecimal krw = exRateData.rates().get("KRW");
-
-        // 금액 계산
-        BigDecimal convertedAmount = foreignCurrencyAmount.multiply(krw);
-
-        // 유효 시간 계산
+        BigDecimal exRate = getExRate(currency);
+        BigDecimal convertedAmount = foreignCurrencyAmount.multiply(exRate);
         LocalDateTime validUntil = LocalDateTime.now().plusMinutes(30);
 
-        return new Payment(orderId, currency, foreignCurrencyAmount, krw, convertedAmount, validUntil);
+        return new Payment(orderId, currency, foreignCurrencyAmount, exRate, convertedAmount, validUntil);
     }
 
-    public static void main(String[] args) throws IOException {
-        PaymentService paymentService = new PaymentService();
-        Payment payment = paymentService.prepare(100L, "USD", BigDecimal.valueOf(50.7));
-        System.out.println(payment);
-    }
+    abstract BigDecimal getExRate(String currency) throws IOException;
 }
