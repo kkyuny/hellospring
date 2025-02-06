@@ -1,6 +1,7 @@
 package tobyspring.hellospring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@Component
 public class PaymentService {
     private final ExRateProvider exRateProvider;
 

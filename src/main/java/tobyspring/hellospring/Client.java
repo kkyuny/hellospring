@@ -1,16 +1,17 @@
 package tobyspring.hellospring;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 
 public class Client {
     public static void main(String[] args) throws IOException {
-        PaymentService paymentService = new PaymentService(new SimpleExRateProvider()); // 클라이언트에서 관계책임을 설정한다.
-        /*
-        * 1. 생성자를 생성한다.
-        * 2. 서비스에 생성자를 전달 및 사용한다.
-        * 3. 서비스에서는 생성자를 전달 받아 인터페이스의 메서드를 실행한다.
-        * */
+        BeanFactory beanFactory = new AnnotationConfigApplicationContext(ObjectFactory.class);
+        PaymentService paymentService = beanFactory.getBean(PaymentService.class);
+        // 클래스들의 의존관계를 외부에서 주입해준 것이다.
+
         Payment payment = paymentService.prepare(100L, "USD", BigDecimal.valueOf(50.7));
         System.out.println(payment);
     }
