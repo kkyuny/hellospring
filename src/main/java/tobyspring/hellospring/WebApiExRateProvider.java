@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.stream.Collectors;
 
-@Component // 클라이언트에서 해당 컴포턴트를 이용해서 의존관계를 설정한다.
+@Component // 클라이언트에서 등록 된 컴포턴트를 이용해서 의존관계를 설정한다.
 public class WebApiExRateProvider implements ExRateProvider {
     @Override
     public BigDecimal getExRate(String currency) throws IOException {
