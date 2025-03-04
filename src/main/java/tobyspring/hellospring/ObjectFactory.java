@@ -1,9 +1,11 @@
 package tobyspring.hellospring;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+import tobyspring.hellospring.exrate.CachedExRateProvider;
+import tobyspring.hellospring.payment.ExRateProvider;
+import tobyspring.hellospring.exrate.WebApiExRateProvider;
+import tobyspring.hellospring.payment.PaymentService;
 
 @Configuration // 스프링이 사용하는 구성정보
 //@ComponentScan // 스프링이 알아서 컴포넌트를 스캔하여 의존관계를 내부적으로 설정하게하는 어노테이션
