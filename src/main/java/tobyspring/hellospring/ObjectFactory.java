@@ -5,16 +5,21 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Configuration
-@ComponentScan // 스프링이 알아서 컴포넌트를 스캔하여 의존관계를 내부적으로 설정하게하는 어노테이션
+@Configuration // 스프링이 사용하는 구성정보
+//@ComponentScan // 스프링이 알아서 컴포넌트를 스캔하여 의존관계를 내부적으로 설정하게하는 어노테이션
 public class ObjectFactory { // 오브젝트팩토리를 이용해 생성자 주입을 하는 것이 정통적 방식.
-    /*@Bean
+    @Bean
     public PaymentService paymentService(){
-        return new PaymentService(exRateProvider());
+        return new PaymentService(cachedExRateProvider());
+    }
+
+    @Bean
+    public CachedExRateProvider cachedExRateProvider(){
+        return new CachedExRateProvider(exRateProvider());
     }
 
     @Bean
     public ExRateProvider exRateProvider() {
         return new WebApiExRateProvider();
-    }*/
+    }
 }
