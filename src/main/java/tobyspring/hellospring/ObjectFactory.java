@@ -12,12 +12,7 @@ import tobyspring.hellospring.payment.PaymentService;
 public class ObjectFactory { // 오브젝트팩토리를 이용해 생성자 주입을 하는 것이 정통적 방식.
     @Bean
     public PaymentService paymentService(){
-        return new PaymentService(cachedExRateProvider());
-    }
-
-    @Bean
-    public CachedExRateProvider cachedExRateProvider(){
-        return new CachedExRateProvider(exRateProvider());
+        return new PaymentService(exRateProvider());
     }
 
     @Bean
