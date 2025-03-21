@@ -4,14 +4,18 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Component
 public class PaymentService {
+    // 생성자를 통해 전달받은 클래스는 저장을 해야 사용할 수 있기 때문에 선언하는 것이다.
     private final ExRateProvider exRateProvider;
+    private final Clock clock;
 
-    public PaymentService(ExRateProvider exRateProvider) {
+    public PaymentService(ExRateProvider exRateProvider, Clock clock) {
         this.exRateProvider = exRateProvider;
+        this.clock = clock;
     }
     /*
        public PaymentService() {
@@ -38,7 +42,7 @@ public class PaymentService {
         // https://open.er-api.com/v6/latest/USD
         BigDecimal exRate = exRateProvider.getExRate(currency);
         BigDecimal convertedAmount = foreignCurrencyAmount.multiply(exRate);
-        LocalDateTime validUntil = LocalDateTime.now().plusMinutes(30);
+        LocalDateTime validUntil = LocalDateTime.now(clock).plusMinutes(30); // 시간을 어떤 시계로부터 가져온다.
 
         return new Payment(orderId, currency, foreignCurrencyAmount, exRate, convertedAmount, validUntil);
     }

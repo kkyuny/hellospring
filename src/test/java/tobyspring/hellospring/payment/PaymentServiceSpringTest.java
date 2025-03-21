@@ -1,36 +1,36 @@
 package tobyspring.hellospring.payment;
 
-import org.junit.jupiter.api.DisplayName;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tobyspring.hellospring.ObjectFactory;
-import tobyspring.hellospring.TestObjectFactory;
+import tobyspring.hellospring.TestPaymentConfig;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.LocalDateTime;
 
 import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class) // 스프링 테스트를 사용하기 위한 기능 확장 코드
-@ContextConfiguration(classes = TestObjectFactory.class) // 이놈 설명 적자.
+@ContextConfiguration(classes = TestPaymentConfig.class) // 이놈 설명 적자.
 class PaymentServiceSpringTest {
+    // 스프링 테스트의 장점은 컨피그가 만든 빈을 가져와서 사용할 수 있다는 장점이 있다.
     @Autowired
-    BeanFactory beanFactory;
+    PaymentService paymentService;
     @Autowired
     ExRateProviderStub exRateProviderStub;
+    @Autowired
+    Clock clock;
 
     @Test
     void convertedAmount() throws IOException {
-        // BeanFactory beanFactory = new AnnotationConfigApplicationContext(TestObjectFactory.class);
-        PaymentService paymentService = beanFactory.getBean(PaymentService.class);
-
+        // BeanFactory beanFactory = new AnnotationConfigApplicationContext(TestPaymentConfig.class);
         //exRate: 1000(기본 설정 값)
         Payment payment = paymentService.prepare(1L, "USD", TEN);
 
@@ -45,4 +45,15 @@ class PaymentServiceSpringTest {
         assertThat(payment2.getConvertedAmount()).isEqualTo(valueOf(10_000));
     }
 
+    @Test
+    void validUntil() throws IOException {
+        Payment payment = paymentService.prepare(1L, "USD", TEN);
+
+        // valid until이 prepare() 30분 뒤로 설정 됐는가?
+        LocalDateTime now = LocalDateTime.now(this.clock);
+        LocalDateTime expectedValidUntil = now.plusMinutes(30);
+
+        // paymentService에서 설정한 유효시간이 실제로 유효한지 테스트하는 부분이다. 이 때 실제시간보다는 고정된 시간을 사용하는것이 유리하다.
+        Assertions.assertThat(payment.getValidUntil()).isEqualTo(expectedValidUntil);
+    }
 }
