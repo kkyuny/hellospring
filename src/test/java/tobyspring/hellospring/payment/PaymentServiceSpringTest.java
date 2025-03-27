@@ -29,7 +29,7 @@ class PaymentServiceSpringTest {
     Clock clock;
 
     @Test
-    void convertedAmount() throws IOException {
+    void convertedAmount() {
         // BeanFactory beanFactory = new AnnotationConfigApplicationContext(TestPaymentConfig.class);
         //exRate: 1000(기본 설정 값)
         Payment payment = paymentService.prepare(1L, "USD", TEN);
@@ -46,7 +46,7 @@ class PaymentServiceSpringTest {
     }
 
     @Test
-    void validUntil() throws IOException {
+    void validUntil() {
         Payment payment = paymentService.prepare(1L, "USD", TEN);
 
         // valid until이 prepare() 30분 뒤로 설정 됐는가?

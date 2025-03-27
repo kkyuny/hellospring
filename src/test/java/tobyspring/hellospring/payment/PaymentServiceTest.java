@@ -26,7 +26,7 @@ class PaymentServiceTest {
     // 해당하는 기존 코드에서 테스트를 제네레이트 할 수 있다.
     @Test
     @DisplayName("prepare 메서드가 요구사항 3가지를 잘 충족했는지 검증")
-    void convertedAmount() throws IOException {
+    void convertedAmount() {
 
 
         testAmount(valueOf(500), valueOf(5_000), this.clock);
@@ -39,7 +39,7 @@ class PaymentServiceTest {
     }
 
     @Test
-    void validUntil() throws IOException {
+    void validUntil() {
         PaymentService paymentService = new PaymentService(new ExRateProviderStub(valueOf(1_000)), clock); // stub에서 외부에서 값을 가져왔다고 가정하고 특정한 값을 제공한다.
 
         Payment payment = paymentService.prepare(1L, "USD", TEN);
@@ -52,7 +52,7 @@ class PaymentServiceTest {
         Assertions.assertThat(payment.getValidUntil()).isEqualTo(expectedValidUntil);
     }
 
-    private static void testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) throws IOException {
+    private static void testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) {
         /* 외부의 api를 제어하는 테스트는 외부 환경 변경 등이 있을 때 검증에 위험하다.
             그래서 외부 api를 대체하는 인터페이스(임포스터, 스텁 등으로 부른다.)를 만들어 대체하여 테스트한다.
             또, PaymentService의 기능이 확장하더라도 테스트 코드의 수정이 필요없고, 내가 원하는 기능만 테스트 할 수 있다.

@@ -38,7 +38,7 @@ public class PaymentService {
         위와 같이 생성자를 주입받아 사용하면 클라이언트 측에서 관계설정의 책임과 분리 역할을 맡는다.
      */
 
-    public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount) throws IOException {
+    public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrencyAmount){
         // https://open.er-api.com/v6/latest/USD
         BigDecimal exRate = exRateProvider.getExRate(currency);
 

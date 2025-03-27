@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 public class Client {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         BeanFactory beanFactory = new AnnotationConfigApplicationContext(PaymentConfig.class);
         PaymentService paymentService = beanFactory.getBean(PaymentService.class);
         // 클래스들의 의존관계를 외부에서 주입해준 것이다.
