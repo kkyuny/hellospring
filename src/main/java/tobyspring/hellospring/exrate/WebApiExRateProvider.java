@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.simple.internal.SimpleProvider;
 import org.springframework.stereotype.Component;
+import tobyspring.hellospring.api.ApiExecutor;
 import tobyspring.hellospring.api.SimpleApiExecutor;
 import tobyspring.hellospring.payment.ExRateProvider;
 
@@ -20,10 +21,10 @@ public class WebApiExRateProvider implements ExRateProvider {
     public BigDecimal getExRate(String currency) {
         String url = "https://open.er-api.com/v6/latest/" + currency;
         
-        return runApiForExRate(url);
+        return runApiForExRate(url, new SimpleApiExecutor()); // 여기서 사용할 Executor를 선택해서 사용할 수 있다.
     }
 
-    private BigDecimal runApiForExRate(String url) {
+    private BigDecimal runApiForExRate(String url, ApiExecutor apiExecutor) {
         URI uri;
         try {
             uri = new URI(url);
@@ -33,7 +34,7 @@ public class WebApiExRateProvider implements ExRateProvider {
 
         String response;
         try {
-            response = new SimpleApiExecutor().execute(uri);
+            response = apiExecutor.execute(uri);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
