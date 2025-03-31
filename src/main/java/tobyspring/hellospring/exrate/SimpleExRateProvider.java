@@ -4,6 +4,7 @@ import tobyspring.hellospring.payment.ExRateProvider;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
 
 //@Component // 컴포넌트로 등록된 프로바이더가 주입되어 실행된다.
 public class SimpleExRateProvider implements ExRateProvider {

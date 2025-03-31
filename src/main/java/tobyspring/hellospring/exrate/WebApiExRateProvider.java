@@ -2,7 +2,9 @@ package tobyspring.hellospring.exrate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.simple.internal.SimpleProvider;
 import org.springframework.stereotype.Component;
+import tobyspring.hellospring.api.SimpleApiExecutor;
 import tobyspring.hellospring.payment.ExRateProvider;
 
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ public class WebApiExRateProvider implements ExRateProvider {
 
         String response;
         try {
-            response = executeApi(uri);
+            response = new SimpleApiExecutor().execute(uri);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,18 +45,10 @@ public class WebApiExRateProvider implements ExRateProvider {
         }
     }
 
-    private BigDecimal extractExRate(String response) throws JsonProcessingException {
+    private static BigDecimal extractExRate(String response) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ExRateData exRateData = mapper.readValue(response, ExRateData.class);
 
         return exRateData.rates().get("KRW");
-    }
-
-    private String executeApi(URI uri) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
-
-        try ( BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            return bufferedReader.lines().collect(Collectors.joining());
-        }
     }
 }
