@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class SimpleApiExecutor implements ApiExecutor{
     @Override
     public String execute(URI uri) throws IOException {
+
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
 
         try ( BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
