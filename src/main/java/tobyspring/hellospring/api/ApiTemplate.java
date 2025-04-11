@@ -8,6 +8,28 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class ApiTemplate {
+    private final ApiExecutor apiExecutor;
+    private final ExRateExtractor exRateExtractor;
+
+    public ApiTemplate(ApiExecutor apiExecutor, ExRateExtractor exRateExtractor) {
+        this.apiExecutor = apiExecutor;
+        this.exRateExtractor = exRateExtractor;
+    }
+
+    // 기본적으로 url만 전달받으면 디폴트 생성자를 전달한다.
+    public BigDecimal getExRate(String url){
+        return this.getExRate(url, this.apiExecutor, this.exRateExtractor);
+    }
+
+    // 디폴트 생성자는 this로 설정한다.
+    public BigDecimal getExRate(String url, ApiExecutor apiExecutor) {
+        return this.getExRate(url, apiExecutor, this.exRateExtractor);
+    }
+
+    public BigDecimal getExRate(String url, ExRateExtractor exRateExtractor) {
+        return this.getExRate(url, this.apiExecutor, exRateExtractor);
+    }
+
     public BigDecimal getExRate(String url, ApiExecutor apiExecutor, ExRateExtractor exRateExtractor) {
         URI uri;
         try {
