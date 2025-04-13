@@ -2,9 +2,12 @@ package tobyspring.hellospring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import tobyspring.hellospring.api.ApiTemplate;
 import tobyspring.hellospring.api.ErApiExtractor;
 import tobyspring.hellospring.api.SimpleApiExecutor;
+import tobyspring.hellospring.exrate.RestTemplateExRateProvider;
+import tobyspring.hellospring.exrate.SimpleExRateProvider;
 import tobyspring.hellospring.payment.ExRateProvider;
 import tobyspring.hellospring.exrate.WebApiExRateProvider;
 import tobyspring.hellospring.payment.PaymentService;
@@ -19,14 +22,19 @@ public class PaymentConfig { // 오브젝트팩토리를 이용해 생성자 주
         return new PaymentService(exRateProvider(), clock());
     }
 
-    @Bean
+    /*@Bean
     public ApiTemplate apiTemplate(){
         return new ApiTemplate(new SimpleApiExecutor(), new ErApiExtractor());
+    }*/
+
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 
     @Bean
     public ExRateProvider exRateProvider() {
-        return new WebApiExRateProvider(apiTemplate());
+        return new RestTemplateExRateProvider(restTemplate());
     }
 
     @Bean

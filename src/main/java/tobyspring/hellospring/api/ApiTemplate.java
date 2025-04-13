@@ -11,6 +11,11 @@ public class ApiTemplate {
     private final ApiExecutor apiExecutor;
     private final ExRateExtractor exRateExtractor;
 
+    public ApiTemplate() {
+        this.apiExecutor = new HttpClientApiExecutor();
+        this.exRateExtractor = new ErApiExtractor();
+    }
+
     public ApiTemplate(ApiExecutor apiExecutor, ExRateExtractor exRateExtractor) {
         this.apiExecutor = apiExecutor;
         this.exRateExtractor = exRateExtractor;
