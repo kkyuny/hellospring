@@ -15,6 +15,9 @@ public class Order {
 
     private BigDecimal total;
 
+    public Order() {
+    }
+
     public Order(String no, BigDecimal total) {
         this.no = no;
         this.total = total;
