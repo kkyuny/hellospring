@@ -23,13 +23,27 @@ public class DataConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource());
-        emf.setPackagesToScan("tobyspring.hellospring");
+
+        emf.setDataSource(dataSource()); // 데이터베이스 연결 정보 주입
+        emf.setPackagesToScan("tobyspring.hellospring"); // @Entity 클래스가 들어 있는 패키지
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter() {{
             setDatabase(Database.H2);
             setGenerateDdl(true);
             setShowSql(true);
         }});
+
+        /*
+            더블 중괄호(ouble brace initialization)
+            - 익명 내부 클래스 + 인스턴스 초기화 블록
+            - {{ ... }}는 익명 클래스를 생성하면서 인스턴스 초기화 블록으로 바로 설정값을 적용하는 문법.
+            - 하지만 권장하는 방식은 아님
+            - 추천 코드
+            HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+            adapter.setDatabase(Database.H2);
+            adapter.setGenerateDdl(true);
+            adapter.setShowSql(true);
+            emf.setJpaVendorAdapter(adapter);
+         */
 
         return emf;
     }
