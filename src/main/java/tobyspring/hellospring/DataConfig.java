@@ -4,8 +4,10 @@ import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
@@ -23,8 +25,18 @@ public class DataConfig {
         return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
 
-    // entity manager factory: 엔티티 매니져가 만드는 역할을 한다.
     @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
+
+    /*@Bean
+    public BeanPostProcessor postProcessor(){
+        return new PersistenceAnnotationBeanPostProcessor();
+    }*/
+
+    // entity manager factory: 엔티티 매니져가 만드는 역할을 한다.
+    /*@Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 
@@ -36,7 +48,7 @@ public class DataConfig {
             setShowSql(true);
         }});
 
-        /*
+        *//*
             더블 중괄호(ouble brace initialization)
             - 익명 내부 클래스 + 인스턴스 초기화 블록
             - {{ ... }}는 익명 클래스를 생성하면서 인스턴스 초기화 블록으로 바로 설정값을 적용하는 문법.
@@ -47,20 +59,8 @@ public class DataConfig {
             adapter.setGenerateDdl(true);
             adapter.setShowSql(true);
             emf.setJpaVendorAdapter(adapter);
-         */
+         *//*
 
         return emf;
-    }
-
-    @Bean
-    public BeanPostProcessor postProcessor(){
-        return new PersistenceAnnotationBeanPostProcessor();
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
-    }
-
-
+    }*/
 }
