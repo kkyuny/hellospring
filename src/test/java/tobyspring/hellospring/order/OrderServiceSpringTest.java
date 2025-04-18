@@ -9,18 +9,11 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tobyspring.hellospring.OrderConfig;
-import tobyspring.hellospring.TestPaymentConfig;
-import tobyspring.hellospring.payment.ExRateProviderStub;
-import tobyspring.hellospring.payment.Payment;
-import tobyspring.hellospring.payment.PaymentService;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.Assertions.*;
 
