@@ -70,3 +70,50 @@
 - 이러한 구성정보는 보통 `@Configuration` 클래스를 통해 정의한다.
 - 객체 생성과 의존관계 설정을 해당 오브젝트가 아닌 외부(오브젝트 팩토리)가 담당함으로써 `제어의 역전(Inversion of Control)`과 `의존성 주입(Dependency Injection)`이 발생한다.
 - 이와 같은 방식으로 객체를 생성하고 주입하며 관리하는 기능을 제공하는 것이 `스프링 IoC/DI 컨테이너`이며, 생성된 오브젝트는 컨테이너에 의해 관리된다.
+
+### 의존성 역전 원칙(Dependency Inversion Principle, DIP)
+#### 📌 정의
+- **상위 수준 모듈**은 **하위 수준 모듈**에 의존해서는 안 된다.
+- **둘 다 추상화(인터페이스 또는 추상 클래스)**에 의존해야 한다.
+- **추상화는 구체적인 것에 의존하지 말아야 하며**, **구체적인 것이 추상화에 의존해야 한다.**
+
+#### ✅ 핵심 개념
+- **정책(비즈니스 로직)**과 **구현(세부 기능)**을 분리한다.
+- **의존의 방향을 '구체 → 추상'으로 역전**시켜서 유연성과 확장성을 확보한다.
+
+#### 🔁 DIP 적용 전 vs 적용 후
+
+| 구분 | 적용 전 | 적용 후 |
+|------|---------|---------|
+| 의존 방향 | 상위 모듈 → 하위 모듈 | 하위 모듈 → 추상화 ← 상위 모듈 |
+| 변경 영향 | 하위 모듈 변경 시 상위 모듈 영향 O | 하위 모듈 변경 시 상위 모듈 영향 X |
+| 유연성 | 낮음 | 높음 |
+
+#### 💡 예시 (Java)
+
+```
+// 추상화에 의존
+public interface MessageSender {
+    void send(String message);
+}
+
+// 하위 모듈 (구체 구현)
+public class EmailSender implements MessageSender {
+    public void send(String message) {
+        System.out.println("Email: " + message);
+    }
+}
+
+// 상위 모듈 (정책)
+public class NotificationService {
+    private final MessageSender sender;
+
+    public NotificationService(MessageSender sender) {
+        this.sender = sender;
+    }
+
+    public void notify(String msg) {
+        sender.send(msg);
+    }
+}
+```
